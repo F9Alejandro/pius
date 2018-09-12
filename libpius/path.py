@@ -92,8 +92,15 @@ def get_gpghome(HOME):
 def get_piushome(HOME):
     if sys.platform == "win32":
         return os.path.join(HOME, 'roaming\/pius')
-    else:
+    elif sys.platform == "darwin":
         return os.path.join(HOME, '.pius')
+    else:
+        if os.environ.get('XDG_CONFIG_HOME') != "":
+            return os.environ.get('XDG_CONFIG_HOME')
+        elif os.path.exists(os.path.join(HOME, '.config')):
+            return os.path.join(HOME, '.config')
+        else:
+            return os.path.join(HOME, '.pius')
 
 def set_tmpdir(dir):
     if sys.platform == "win32":
